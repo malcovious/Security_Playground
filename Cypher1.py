@@ -23,33 +23,49 @@ decypher = { 'A' : 's' , 'B' : 'g', 'C' : 'm' ,'D' : 'a' , 'E' : 'k' ,
 'X' : 'n' , 'Y' : 'r' , 'Z' : 'y' }
 
 def M1(letter):
-	text1 = chr(ord(letter) - 3)		# takes individual letter then turns into ASCII value then subs 3 reassigns to text1
-	if(ord(text1) < ord('a')):			# checks to see if wraparound is needed
-		text1 = (chr(ord(text1) + 26))	# wraps letter back into ascii letter assigns letter to text1
+	text1 = chr(ord(letter) - 3)			# takes individual letter then turns into ASCII value then subs 3 reassigns to text1
+	if(text1.islower()):
+		if(ord(text1) < ord('a')):			# checks to see if wraparound is needed
+			text1 = chr(ord(text1) + 26)	# wraps letter back into ascii letter assigns letter to text1
+	else:
+		if(ord(text1) < ord('A')):
+			text1 = chr(ord(text1) + 26)
 	return text1
 
 def M2(letter):
-	return cypher[letter]				# preforms cipher with cypher dictionary
+	return cypher[letter.lower()]				# preforms cipher with cypher dictionary
 
 def M3(letter):
 	text2 = chr(ord(letter) + 5)		# takes indivitual letter then turns into ASCII value then adds 5 reassigns to text2
-	if(ord(text2) > ord('z')):			# cheks to see if wraparound is needed
-		text2 = (chr(ord(text2) - 26))	# wraps letter back into ASCII letter assigns letter to text2
+	if(text2.islower()):
+		if(ord(text2) > ord('z')):			# cheks to see if wraparound is needed
+			text2 = chr(ord(text2) - 26)	# wraps letter back into ASCII letter assigns letter to text2
+	else:
+		if(ord(text2) > ord('Z')):
+			text2 = chr(ord(text2) - 26)
 	return text2
 
 def DM1(letter):
 	text3 = chr(ord(letter) + 3)		# does the reverse of M1
-	if(ord(text3) >  ord('Z')):
-		text3 = chr(ord(text3) - 26)
+	if(text3.islower()):
+		if(ord(text3) > ord('z')):
+			text3 = chr(ord(text3) - 26)
+	else:
+		if(ord(text3) > ord('Z')):
+			text3 = chr(ord(text3) - 26)
 	return text3
 
 def DM2(letter):
-	return decypher[letter]		# preforms cipher with decypher dictionary
+	return decypher[letter.upper()]		# preforms cipher with decypher dictionary
 
 def DM3(letter):
 	text4 = chr(ord(letter) - 5)		# does the reverse of M3
-	if(ord(text4) < ord('A')):
-		text4 = chr(ord(text4) + 26)
+	if(text4.islower()):
+		if(ord(text4) < ord('a')):
+			text4 = chr(ord(text4) + 26)
+	else:
+		if(ord(text4) < ord('A')):
+			text4 = chr(ord(text4) + 26)
 	return text4
 
 def Encription():
@@ -59,20 +75,19 @@ def Encription():
 	OutFile = (open(File, 'w'))
 	for line in In:						# grabs code line by line
 		line2 = line.rstrip('\n')		# strips off the new line char
-		line2 = line2.lower()			# turns the line to lowercase
 		toCode = line2.split(' ')		# splits the line into words
 		x = 0
 		for word in toCode:
 			for i in word:
 				if(x % 3 == 0):			#if else satement to force the rotation of M1,M2,M3
 					code0 = M1(i)
-					OutFile.write(code0.upper())
+					OutFile.write(code0)
 				elif(x % 3 == 1):
 					code1 = M2(i)
 					OutFile.write(code1)
 				elif(x % 3 == 2):
 					code2 = M3(i)
-					OutFile.write(code2.upper())
+					OutFile.write(code2)
 				x += 1
 			OutFile.write(' ')
 	msg = messagebox.showinfo("Success!", "File encrypted successully!")
@@ -86,20 +101,19 @@ def Decription():
 	OutFile = open(File, 'w')
 	for line in In:
 		line3 = line.rstrip('\n')
-		line3 = line3.upper()
 		toCode = line3.split(' ')
 		x = 0
 		for word in toCode:
 			for i in word:
 				if(x % 3 == 0):
 					code0 = DM1(i)
-					OutFile.write(code0.lower())
+					OutFile.write(code0)
 				elif(x % 3 == 1):
 					code1 = DM2(i)
 					OutFile.write(code1)
 				elif(x % 3 == 2):
 					code2 = DM3(i)
-					OutFile.write(code2.lower())
+					OutFile.write(code2)
 				x +=1
 			OutFile.write(' ')
 	msg = messagebox.showinfo("Success!", "File decrypted successully!")
